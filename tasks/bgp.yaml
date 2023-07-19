@@ -1,0 +1,53 @@
+---
+- name: Pathvector
+  block:
+
+  - name: Add Key pathvector
+    become: yes
+    ansible.builtin.get_url:
+      url: https://repo.pathvector.io/pgp.asc
+      dest: /etc/apt/trusted.gpg.d/pathvector.asc
+    when: ansible_facts.os_family == 'Debian'
+
+  - name: Add repo pathvector
+    become: yes 
+    ansible.builtin.apt_repository:
+      repo: deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/pathvector.asc] https://repo.pathvector.io/apt/ stable main
+      state: present
+    when: ansible_facts.os_family == 'Debian'
+
+  - name: Pathvector
+    become: yes
+    apt: 
+      name: pathvector 
+      state: latest
+    when: ansible_facts.os_family == 'Debian'
+
+  - name: BGPQ4
+    become: yes
+    apt: 
+      name: bgpq4 
+      state: latest
+    when: ansible_facts.os_family == 'Debian'
+
+- name: Bird2
+  become: yes
+  apt: 
+    name: bird2 
+    state: latest 
+  when: ansible_facts.os_family == 'Debian'
+
+- name: Wireguard
+  become: yes
+  apt: 
+    name: wireguard
+    state: latest 
+  when: ansible_facts.os_family == 'Debian'
+
+- name: git
+  become: yes 
+  apt: 
+    name: git 
+    state: latest 
+  when: ansible_facts.os_family == 'Debian'
+
